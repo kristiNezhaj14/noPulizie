@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Servizi Camera</title>
+
+    <style>
+      :root {
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #6b7280;
+        --accent: #b8923b;
+        --ok: #166534;
+        --border: #e5e7eb;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 22px;
+      }
+
+      /* Card premium */
+      .card {
+        width: 100%;
+        max-width: 520px;
+        background: var(--card);
+        border-radius: 22px;
+        box-shadow: 0 20px 45px rgba(17, 24, 39, 0.1);
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Language switch */
+      .lang {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        display: flex;
+        gap: 8px;
+        z-index: 2;
+      }
+      .flag {
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: 12px;
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        box-shadow: 0 6px 14px rgba(17, 24, 39, 0.06);
+      }
+      .flag.active {
+        outline: 2px solid rgba(184, 146, 59, 0.35);
+        border-color: rgba(184, 146, 59, 0.55);
+      }
+
+      /* Header boutique */
+      .header {
+        padding: 28px 24px 18px 24px;
+        background: linear-gradient(180deg, #ffffff, #fbfbfb);
+        text-align: center;
+      }
+      .logoWrap.large {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+      .logo {
+        height: 68px; /* LOGO GRANDE */
+        width: auto;
+        display: block;
+      }
+      .brand {
+        margin: 0;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        text-align: center;
+      }
+      h1 {
+        margin: 12px 0 0 0;
+        font-size: 22px;
+        line-height: 1.25;
+        text-align: center;
+        font-weight: 650;
+        color: var(--text);
+      }
+      .goldline {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(184, 146, 59, 0.95),
+          transparent
+        );
+      }
+
+      /* Content */
+      .content {
+        padding: 18px 24px 22px 24px;
+      }
+      .lead {
+        margin: 0 0 14px 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+        text-align: left;
+      }
+
+      /* Impact card */
+      .impact {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px 14px;
+        background: #fafafa;
+        margin: 14px 0 18px 0;
+      }
+      .badge {
+        flex: 0 0 auto;
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        background: rgba(184, 146, 59, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+      }
+      .impact h2 {
+        font-size: 14px;
+        margin: 0 0 6px 0;
+        color: var(--text);
+      }
+      .impact p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .small {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* Button */
+      .btn {
+        width: 100%;
+        border: none;
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 16px;
+        font-weight: 750;
+        color: #fff;
+        background: var(--accent);
+        cursor: pointer;
+        transition: transform 0.05s ease, filter 0.15s ease;
+        box-shadow: 0 14px 24px rgba(184, 146, 59, 0.18);
+      }
+      .btn:hover {
+        filter: brightness(0.98);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn:disabled {
+        opacity: 0.75;
+        cursor: default;
+        box-shadow: none;
+      }
+
+      /* Success */
+      .success {
+        display: none;
+        margin-top: 14px;
+        border-radius: 14px;
+        padding: 12px 14px;
+        background: rgba(22, 101, 52, 0.08);
+        border: 1px solid rgba(22, 101, 52, 0.18);
+        color: var(--ok);
+        font-weight: 750;
+        text-align: center;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 14px 24px 20px 24px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.55;
+        background: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="card">
+      <!-- Language switch -->
+      <div class="lang" aria-label="Language">
+        <button class="flag" id="itBtn" title="Italiano" type="button">
+          🇮🇹
+        </button>
+        <button class="flag" id="enBtn" title="English" type="button">
+          🇬🇧
+        </button>
+      </div>
+
+      <div class="header">
+        <div class="logoWrap large">
+          <!-- Assicurati che logo_ca_nobile.png sia nella root del repo -->
+          <img class="logo" src="logo_ca_nobile.png" alt="Hotel Ca' Nobile" />
+        </div>
+        <p class="brand" id="brandText">Servizi camera</p>
+        <h1 id="titleText">Pulizia giornaliera</h1>
+      </div>
+
+      <div class="goldline"></div>
+
+      <div class="content">
+        <p class="lead" id="leadText">
+          Se oggi non desideri la pulizia della camera, premi il pulsante qui
+          sotto. La richiesta verrà inviata direttamente alla reception.
+        </p>
+
+        <div class="impact">
+          <div class="badge">🌿</div>
+          <div>
+            <h2 id="impactTitle">Impatto ambientale</h2>
+            <p id="impactText">
+              Rinunciando alla pulizia giornaliera contribuisci a ridurre
+              consumi di acqua, energia e detergenti. In media, può evitare
+              <strong>fino a ~1 kg di CO₂</strong> per camera al giorno (stima
+              indicativa).
+            </p>
+            <div class="small" id="impactLine"></div>
+          </div>
+        </div>
+
+        <button class="btn" id="btn">Non voglio pulizie oggi</button>
+        <div class="success" id="ok">✅ Richiesta inviata. Grazie!</div>
+      </div>
+
+      <div class="footer" id="footerText">
+        Nota: la stima CO₂ è indicativa e varia in base a biancheria, lavanderia
+        e consumi energetici.
+      </div>
+    </div>
+
+    <script>
+      // === CONFIG ===
+      const FORM_RESPONSE_URL =
+        "https://docs.google.com/forms/d/e/1FAIpQLSeYpnVPjEWKcm1LADwlkID2P18QVjGP0VMInQd7g4gZ6lhXuA/formResponse";
+
+      const ENTRY_CAMERA = "entry.1016285326";
+      const ENTRY_CLEANING = "entry.1351464284";
+
+      const EST_KG_CO2_PER_DAY = 1.0; // cambia se vuoi (es. 0.8 oppure 1.2)
+
+      // === i18n strings ===
+      const STR = {
+        it: {
+          brand: "Servizi camera",
+          title: "Pulizia giornaliera",
+          lead: "Se oggi non desideri la pulizia della camera, premi il pulsante qui sotto. La richiesta verrà inviata direttamente alla reception.",
+          impactTitle: "Impatto ambientale",
+          impact:
+            "Rinunciando alla pulizia giornaliera contribuisci a ridurre consumi di acqua, energia e detergenti. In media, può evitare <strong>fino a ~1 kg di CO₂</strong> per camera al giorno (stima indicativa).",
+          btn: "Non voglio pulizie oggi",
+          sending: "Invio…",
+          ok: "✅ Richiesta inviata. Grazie!",
+          footer:
+            "Nota: la stima CO₂ è indicativa e varia in base a biancheria, lavanderia e consumi energetici.",
+          impactLine: (camera) =>
+            `Camera ${camera}: scegliendo oggi “no pulizie” risparmi fino a ~${EST_KG_CO2_PER_DAY.toFixed(
+              1
+            )} kg di CO₂.`,
+        },
+        en: {
+          brand: "In-room services",
+          title: "Daily housekeeping",
+          lead: "If you don’t want housekeeping today, tap the button below. Your request will be sent directly to the reception.",
+          impactTitle: "Environmental impact",
+          impact:
+            "By opting out of daily housekeeping you help reduce water, energy and detergents use. On average, this can avoid <strong>up to ~1 kg of CO₂</strong> per room per day (indicative estimate).",
+          btn: "No housekeeping today",
+          sending: "Sending…",
+          ok: "✅ Request sent. Thank you!",
+          footer:
+            "Note: the CO₂ estimate is indicative and varies based on laundry, linen use and energy consumption.",
+          impactLine: (camera) =>
+            `Room ${camera}: by opting out today you save up to ~${EST_KG_CO2_PER_DAY.toFixed(
+              1
+            )} kg of CO₂.`,
+        },
+      };
+
+      function setLang(lang) {
+        localStorage.setItem("lang", lang);
+        document
+          .getElementById("itBtn")
+          .classList.toggle("active", lang === "it");
+        document
+          .getElementById("enBtn")
+          .classList.toggle("active", lang === "en");
+
+        document.getElementById("brandText").textContent = STR[lang].brand;
+        document.getElementById("titleText").textContent = STR[lang].title;
+        document.getElementById("leadText").textContent = STR[lang].lead;
+        document.getElementById("impactTitle").textContent =
+          STR[lang].impactTitle;
+        document.getElementById("impactText").innerHTML = STR[lang].impact;
+        document.getElementById("btn").textContent = STR[lang].btn;
+        document.getElementById("ok").textContent = STR[lang].ok;
+        document.getElementById("footerText").textContent = STR[lang].footer;
+
+        const params = new URLSearchParams(window.location.search);
+        const camera = params.get("camera");
+        document.getElementById("impactLine").textContent = camera
+          ? STR[lang].impactLine(camera)
+          : "";
+      }
+
+      // language buttons
+      document
+        .getElementById("itBtn")
+        .addEventListener("click", () => setLang("it"));
+      document
+        .getElementById("enBtn")
+        .addEventListener("click", () => setLang("en"));
+
+      // default language: saved or browser
+      const saved = localStorage.getItem("lang");
+      const browser = (navigator.language || "it")
+        .toLowerCase()
+        .startsWith("en")
+        ? "en"
+        : "it";
+      setLang(saved || browser);
+
+      // submit to Google Form (camera comes from QR: ?camera=10)
+      document
+        .getElementById("btn")
+        .addEventListener("click", function (event) {
+          event.preventDefault();
+
+          const lang = localStorage.getItem("lang") || browser;
+
+          const params = new URLSearchParams(window.location.search);
+          const camera = params.get("camera") || "ND";
+
+          const data = new FormData();
+          data.append(ENTRY_CAMERA, camera);
+          data.append(ENTRY_CLEANING, "NO");
+
+          fetch(FORM_RESPONSE_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: data,
+          });
+
+          const btn = document.getElementById("btn");
+          btn.disabled = true;
+          btn.textContent = STR[lang].sending;
+
+          setTimeout(() => {
+            btn.style.display = "none";
+            document.getElementById("ok").style.display = "block";
+          }, 450);
+        });
+    </script>
+  </body>
+</html>
